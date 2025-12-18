@@ -1,6 +1,6 @@
 import express from "express";
 import CommentController from "../controllers/commentController.js";
-import { authenticateSession } from "../middlewares/Auth.js";
+import { authenticateToken } from "../middlewares/Auth.js";
 import { authorizeRoles } from "../middlewares/Roles.js";
 
 const router = express.Router();
@@ -16,7 +16,7 @@ const router = express.Router();
  *       404:
  *         description: Commentaire non trouvé
  */
-router.get("/", authenticateSession, CommentController.listComments);
+router.get("/", authenticateToken, CommentController.listComments);
 
 /**
  * @openapi
@@ -36,7 +36,7 @@ router.get("/", authenticateSession, CommentController.listComments);
  *       404:
  *         description: Commentaire non trouvé
  */
-router.get("/:id", authenticateSession, CommentController.getComment);
+router.get("/:id", authenticateToken, CommentController.getComment);
 
 /**
  * @openapi
@@ -63,7 +63,7 @@ router.get("/:id", authenticateSession, CommentController.getComment);
  *       400:
  *         description: Requête invalide
  */
-router.post("/", authenticateSession, CommentController.createComment);
+router.post("/", authenticateToken, CommentController.createComment);
 
 /**
  * @openapi
@@ -97,7 +97,7 @@ router.post("/", authenticateSession, CommentController.createComment);
  *       404:
  *         description: Commentaire non trouvé
  */
-router.put("/:id", authenticateSession, authorizeRoles("admin"), CommentController.updateComment);
+router.put("/:id", authenticateToken, authorizeRoles("admin"), CommentController.updateComment);
 
 /**
  * @openapi
@@ -117,6 +117,6 @@ router.put("/:id", authenticateSession, authorizeRoles("admin"), CommentControll
  *       404:
  *         description: Commentaire non trouvé
  */
-router.delete("/:id", authenticateSession, authorizeRoles("admin"), CommentController.deleteComment);
+router.delete("/:id", authenticateToken, authorizeRoles("admin"), CommentController.deleteComment);
 
 export default router;

@@ -11,9 +11,8 @@ if (process.env.NODE_ENV === "test") {
 
 const connectMongo = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI, {
-      dbName: process.env.MONGO_DBNAME,
-    });
+    const mongoUri = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@mongodb:27017/${process.env.MONGO_DBNAME}?authSource=admin`;
+    await mongoose.connect(mongoUri);
     console.log("Connecté à MongoDB");
   } catch (err) {
     console.error("Erreur de connexion MongoDB :", err);

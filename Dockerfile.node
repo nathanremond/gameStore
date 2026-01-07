@@ -1,0 +1,26 @@
+#Build
+FROM node:22 AS build
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+#Normalement mettre npm run build
+RUN echo "build"
+
+#Runtime
+FROM node:22 AS runtime
+
+WORKDIR /app
+
+COPY --from=build /app ./
+
+RUN npm install --only=production
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]

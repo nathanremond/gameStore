@@ -29,16 +29,27 @@ Ce projet a pour but de créer une API Game Store pour gérer les jeux, les util
 
 ### Prérequis:
 
-- Node.js
-- PostgreSQL => Créer une base de dev et une base de test vides
-- MongoDB => Créer une base de dev et une base de test vides
+- Docker (version 26.0 minimum)
+- Docker compose (version 2.0 minimum)
+- OS (Linux, macOS ou Windows avec Docker Desktop)
+
+Vérifier les versions :
+
+- `docker --version`
+- `docker compose version`
 
 Cloner le repo: 
 - `git clone https://github.com/nathanremond/gameStore`
 
-Installer les dépendances:
+Configurer le .env:
 - `cd gameStore`
-- `npm install`
+- `cp .env.example .env`
+
+Démarrer les conteneurs Docker:
+- `docker compose up -d`
+
+Arrêter les conteneurs Docker:
+- `docker compose down`
 
 ## Configuration
 
@@ -52,7 +63,7 @@ NODE_ENV=test (uniquement pour le fichier .env.test)
 
 PGUSER= nom de l'utilisateur postgreSQL
 
-PGHOST= localhost
+PGHOST= postgresql_compose
 
 PGDATABASE= nom de la DB de dev ou de test
 
@@ -60,7 +71,11 @@ PGPASSWORD= mot de passe de l'utilisateur postgreSQL
 
 PGPORT=5432
 
-MONGO_URI= mongodb://127.0.0.1:27017/nom de la DB de dev ou de test
+MONGO_USER= nom de l'utilisateur MongoDB
+
+MONGO_PASSWORD= mot de passe de l'utilisateur MongoDB
+
+MONGO_URI= mongodb://mongodb_compose:27017/nom de la DB de dev ou de test
 
 MONGO_DBNAME= nom de la DB de dev ou de test
 
@@ -68,15 +83,37 @@ JWT_SECRET= Token secret (au choix)
 
 PORT=3000
 
-## Lancer le projet
+## Description des services
 
-#### Mode développement
+#### node:
 
-- `npm run dev`
+- Dockerfile: Dockerfile.node
+- Ports exposés: 3000
+- Variables d'environnement: PORT, MONGO_URI, POSTGRES_HOST, POSTGRES_DB
 
-#### Mode test
+#### postgresql:
 
-- `npm run test_API`
+- Dockerfile: Dockerfile.postgresql
+- Ports exposés: 5432
+- Variables d'environnement: POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB
+
+#### mongodb:
+
+- Dockerfile: Dockerfile.mongodb
+- Ports exposés: 27017
+- Variables d'environnement: MONGO_INITDB_ROOT_USERNAME, MONGO_INITDB_ROOT_PASSWORD, MONGO_INITDB_DATABASE
+
+### Réseaux
+
+Tous les services sont connectés au réseau user-defined gameStoreNetwork.
+Cela permet aux services Node de contacter MongoDB et PostgreSQL via leurs noms de service.
+
+### Volumes
+
+Les volumes postgres_data et mongodb_data permettent d'avoir une persistance des données même si les conteneurs sont supprimés.
+
+### Schéma d'architecture
+![alt text](image.png)
 
 ## Documentation de l'API
 

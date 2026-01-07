@@ -1,3 +1,23 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Environment variables
 .env
 .env.test
+.env.local
+.env.*.local
+
+# Docker volumes and data
+postgres_data/
+mongodb_data/
+docker-compose.override.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

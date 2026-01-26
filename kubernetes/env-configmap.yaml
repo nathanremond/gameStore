@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  MONGO_DBNAME: gameStore_nosql
+  MONGO_URI: mongodb://mongodb:27017/gameStore_nosql
+  PGDATABASE: gameStore
+  PGHOST: postgresql
+  PGPORT: "5432"
+  PGUSER: postgres
+  PORT: "3000"
